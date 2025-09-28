@@ -1,148 +1,167 @@
-# 🖊️ Handwritten Digit Recognition App
+# Handwritten Digit Recognition Flask App
 
-A Machine Learning powered Flask web application that recognizes handwritten digits (0-9) using a trained neural network model.
+A web application that recognizes handwritten digits (0-9) using a trained neural network model. Users can draw digits on a canvas and get real-time predictions.
 
-## 📌 Features
+## 🚀 Features
 
-- **Real-time digit recognition** from hand-drawn input
-- **Interactive canvas** for drawing digits with mouse
-- **High accuracy** neural network model trained on MNIST dataset
-- **Clean, responsive web interface** built with Flask and HTML5 Canvas
-- **Instant predictions** with probability scores
-- **Easy to use** - just draw and click predict!
+- **Interactive Canvas**: Draw digits with your mouse or touch
+- **Real-time Prediction**: Get instant digit recognition results
+- **Clean UI**: Simple and intuitive user interface
+- **Responsive Design**: Works on desktop and mobile devices
+- **High Accuracy**: Trained on MNIST dataset for reliable predictions
 
-## 🚀 How to Run Locally
+## 🛠️ Technologies Used
 
-### Prerequisites
-- Python 3.7+
+- **Backend**: Flask (Python web framework)
+- **Machine Learning**: TensorFlow/Keras
+- **Frontend**: HTML5 Canvas, JavaScript, CSS3
+- **Model**: Convolutional Neural Network (CNN)
+
+## 📋 Prerequisites
+
+- Python 3.7 or higher
 - pip (Python package installer)
 
-### Installation Steps
+## 🔧 Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/mushrifa-hussain/handwritten-digit-recognition.git
-   cd handwritten-digit-recognition
+   git clone https://github.com/mushrifa-hussain/Handwritten-Digit-Recognition-Flask-App.git
+   cd Handwritten-Digit-Recognition-Flask-App
    ```
 
-2. **Create virtual environment** (recommended)
+2. **Create a virtual environment**
    ```bash
    python -m venv myenv
-   # On Windows:
+   ```
+
+3. **Activate the virtual environment**
+   
+   **On Windows:**
+   ```bash
    myenv\Scripts\activate
-   # On macOS/Linux:
+   ```
+   
+   **On macOS/Linux:**
+   ```bash
    source myenv/bin/activate
    ```
 
-3. **Install dependencies**
+4. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Run the application**
+5. **Download the trained model**
+   
+   You'll need to train the model first or download a pre-trained model. The model file should be named `handwritten_digit.keras` and placed in the root directory.
+
+## 🚀 Running the Application
+
+1. **Start the Flask server**
    ```bash
    python app.py
    ```
 
-5. **Open your browser** and go to `http://127.0.0.1:5000`
+2. **Open your browser**
+   
+   Navigate to `http://127.0.0.1:5000` or `http://localhost:5000`
 
-## 🎨 How to Use
+3. **Start drawing!**
+   
+   - Use your mouse to draw a digit (0-9) on the black canvas
+   - Click "Predict" to get the AI's prediction
+   - Click "Clear" to start over
 
-1. **Draw a digit** (0-9) on the black canvas using your mouse
-2. **Click "Predict"** to get the AI's prediction
-3. **Click "Clear"** to erase the canvas and try again
-4. **Draw clearly** for best results - the model works best with centered, well-formed digits
-
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```
-handwritten-digit-recognition/
-├── app.py                    # Flask web application
-├── handwritten_digit.keras   # Trained neural network model
+Handwritten-Digit-Recognition-Flask-App/
+├── app.py                 # Main Flask application
+├── requirements.txt       # Python dependencies
+├── handwritten_digit.keras # Trained model (not included)
 ├── templates/
-│   └── index.html           # Main web interface
+│   └── index.html        # Main HTML template
 ├── static/
-│   └── style.css            # CSS styling
-├── requirements.txt         # Python dependencies
-├── .gitignore              # Git ignore file
-└── README.md               # This file
+│   └── style.css         # CSS styles
+└── README.md            # This file
 ```
 
-## 🧠 Model Information
+## 🎯 How It Works
 
-- **Algorithm**: Convolutional Neural Network (CNN)
-- **Framework**: TensorFlow/Keras
-- **Training Dataset**: MNIST (70,000 handwritten digit images)
-- **Input Size**: 28x28 pixels (grayscale)
-- **Accuracy**: ~99% on MNIST test set
-- **Model Architecture**: 
-  - Convolutional layers for feature extraction
-  - Dense layers for classification
-  - Softmax output for 10 digit classes (0-9)
+1. **Drawing**: Users draw digits on a 280x280 pixel canvas
+2. **Preprocessing**: The image is resized to 28x28 pixels (MNIST format) and converted to grayscale
+3. **Prediction**: The preprocessed image is fed to the trained CNN model
+4. **Result**: The model returns the predicted digit with confidence scores
 
-## 🛠️ Technical Details
+## 🧠 Model Architecture
 
-### Backend (Flask)
-- **Framework**: Flask web framework
-- **Image Processing**: PIL (Python Imaging Library)
-- **Base64 encoding/decoding** for canvas data transfer
-- **JSON API** for prediction requests
+The model uses a Convolutional Neural Network trained on the MNIST dataset:
+- Input: 28x28 grayscale images
+- Architecture: CNN with multiple convolutional and dense layers
+- Output: 10 classes (digits 0-9)
 
-### Frontend
-- **HTML5 Canvas** for drawing interface
-- **JavaScript** for mouse event handling
-- **CSS3** for responsive styling
-- **AJAX** for seamless prediction requests
+## 📊 Training the Model
 
-### Dependencies
-- `flask` - Web framework
-- `tensorflow` - Machine learning framework
-- `numpy` - Numerical computing
-- `PIL` - Image processing
-- `keras` - High-level neural network API
+To train your own model, you can use the following approach:
 
-## 🌐 Deployment
+```python
+import tensorflow as tf
+from tensorflow import keras
 
-This app can be easily deployed on various platforms:
+# Load MNIST dataset
+(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
 
-- **Heroku**: Add Procfile and requirements.txt
-- **AWS**: Use Elastic Beanstalk or EC2
-- **Google Cloud**: App Engine or Compute Engine
-- **Streamlit Cloud**: Convert to Streamlit app
-- **Docker**: Containerize for easy deployment
+# Preprocess data
+x_train = x_train.reshape(60000, 28, 28, 1).astype('float32') / 255.0
+x_test = x_test.reshape(10000, 28, 28, 1).astype('float32') / 255.0
 
-## 📊 Performance
+# Build model
+model = keras.Sequential([
+    keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    keras.layers.MaxPooling2D((2, 2)),
+    keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    keras.layers.MaxPooling2D((2, 2)),
+    keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    keras.layers.Flatten(),
+    keras.layers.Dense(64, activation='relu'),
+    keras.layers.Dense(10, activation='softmax')
+])
 
-- **Prediction Time**: ~50-100ms per digit
-- **Model Size**: ~2-5MB (depending on architecture)
-- **Memory Usage**: ~100-200MB (including TensorFlow)
-- **Browser Compatibility**: Modern browsers with Canvas support
+# Compile and train
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=5, validation_data=(x_test, y_test))
 
-## 🔧 Customization
+# Save model
+model.save('handwritten_digit.keras')
+```
 
-### Training Your Own Model
-1. Use the MNIST dataset or your own digit images
-2. Train a CNN model with TensorFlow/Keras
-3. Save the model as `.keras` file
-4. Replace `handwritten_digit.keras` in the project
+## 🎨 Customization
 
-### Modifying the Interface
-- Edit `templates/index.html` for layout changes
-- Modify `static/style.css` for styling
-- Update `app.py` for backend logic changes
+- **Styling**: Modify `static/style.css` to change the appearance
+- **Canvas Size**: Adjust the canvas dimensions in `templates/index.html`
+- **Model**: Replace `handwritten_digit.keras` with your own trained model
 
-## ⚠️ Limitations
+## 🐛 Troubleshooting
 
-- Works best with **single digits** (0-9)
-- Requires **clear, well-formed** handwriting
-- **Centered digits** perform better
-- Model trained on **MNIST-style** digits (28x28, grayscale)
+### Common Issues:
+
+1. **Model not found error**
+   - Ensure `handwritten_digit.keras` is in the root directory
+   - Check that the model file is not corrupted
+
+2. **Port already in use**
+   - Change the port in `app.py`: `app.run(host="0.0.0.0", port=5001)`
+
+3. **Dependencies not found**
+   - Make sure you're in the virtual environment
+   - Run `pip install -r requirements.txt` again
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
@@ -150,23 +169,17 @@ This app can be easily deployed on various platforms:
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🙏 Acknowledgments
-
-- **MNIST Dataset** - Yann LeCun, Corinna Cortes, Christopher Burges
-- **TensorFlow Team** - For the amazing ML framework
-- **Flask Community** - For the lightweight web framework
-- **Open Source Community** - For continuous inspiration
-
-## 📞 Contact
+## 👨‍💻 Author
 
 **Mushrifa Hussain**
 - GitHub: [@mushrifa-hussain](https://github.com/mushrifa-hussain)
-- Project Link: [Handwritten Digit Recognition](https://github.com/mushrifa-hussain/handwritten-digit-recognition)
+
+## 🙏 Acknowledgments
+
+- MNIST dataset for training data
+- TensorFlow/Keras team for the excellent ML framework
+- Flask team for the web framework
 
 ---
 
-⭐ **Star this repository** if you found it helpful!
-
-🐛 **Found a bug?** Open an issue and let me know!
-
-💡 **Have suggestions?** I'd love to hear your ideas!
+⭐ **Star this repository if you found it helpful!**
