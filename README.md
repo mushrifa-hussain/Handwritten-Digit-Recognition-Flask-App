@@ -2,6 +2,12 @@
 
 A web application that uses machine learning to recognize handwritten digits (0-9) drawn by users. The app uses a trained Keras model to predict digits drawn on a canvas.
 
+#Preview
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/59ef0e00-a4a9-4110-b1b8-77ff1e87beb1" alt="Screenshot" width="800">
+</p>
+
 ## Features
 
 - **Interactive Canvas**: Draw digits using your mouse on a web canvas
